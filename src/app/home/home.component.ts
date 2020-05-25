@@ -12,6 +12,7 @@ import { Leader } from '../shared/leader';
 })
 export class HomeComponent implements OnInit {
   dish: Dish;
+  dishErrMess: string;
   promotion: Promotion;
   leader: Leader;
 
@@ -21,7 +22,8 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.dishservice.getFeaturedDish()
-      .subscribe(dish=> this.dish = dish);
+      .subscribe(dish=> this.dish = dish,
+        errmess => this.dishErrMess = <any>errmess );
     this.promotionservice.getFeaturedPromotion()
       .subscribe(promotion =>  this.promotion =promotion);
     this.leaderservice.getFeaturedLeader()
