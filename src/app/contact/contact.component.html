@@ -9,7 +9,7 @@
     </div>
   </div>
 
-  <div fxFlex>
+  <div fxFlex [@flyInOut]>
     <h3>Location Information</h3>
     <div fxLayout="column" fxLayout.gt-sm="row">
       <div fxFlex="50" fxFlexOffset="20px">
@@ -36,7 +36,7 @@
     </div>
   </div>
 
-  <div fxFlex fxFlexOffset="20px" class="form-size">
+  <div fxFlex fxFlexOffset="20px" class="form-size" *ngIf = "!isFormSubmitted || elapsed">
     <h3>Send us your Feedback</h3>
     <p>{{ feedbackForm.value | json }} {{ feedbackForm.status | json }}</p>
 
@@ -48,17 +48,17 @@
         </mat-form-field>
         <mat-form-field class="half-width">
           <input matInput formControlName="lastname" placeholder="Last Name" type="text" required>
-          <mat-error *ngIf="formErrors.lastname">{{ formErrors.lastname }}</mat-error>
+          <mat-error *ngIf="formErrors.lastname">{{formErrors.lastname}}</mat-error>
         </mat-form-field>
       </p>
       <p>
         <mat-form-field class="half-width">
           <input matInput formControlName="telnum" placeholder="Tel. Number" type="tel" pattern="[0-9]*" required>
-          <mat-error *ngIf="formErrors.telnum">{{ formErrors.telnum }}</mat-error>
+          <mat-error *ngIf="formErrors.telnum">{{formErrors.telnum}}</mat-error>
         </mat-form-field>
         <mat-form-field class="half-width">
           <input matInput formControlName="email" placeholder="Email" type="email" email required>
-          <mat-error *ngIf="formErrors.email">{{ formErrors.email }}</mat-error>
+          <mat-error *ngIf="formErrors.email">{{formErrors.email}}</mat-error>
         </mat-form-field>
       </p>
       <table class="form-size">
@@ -78,7 +78,28 @@
           <textarea matInput formControlName="message" placeholder="Your Feedback" rows=12></textarea>
         </mat-form-field>
       </p>
-      <button type="submit" mat-button class="background-primary text-floral-white" [disabled]="feedbackForm.invalid">Submit</button>
+      <button type="submit" mat-button class="background-primary text-floral-white" [disabled] = "feedbackForm.invalid">Submit</button>
     </form>
+  </div>
+
+  <div [hidden]="!isFormSubmitted || feedbackCopy" [@expand()]>
+    <h3> Submitting Form </h3>
+    <mat-spinner> </mat-spinner>
+    <h4>Loading Please Wait....</h4>
+  </div>
+  <div fxFlex *ngIf="errMess">
+    <h2>Error</h2>
+    <h4>{{errMess}}</h4>
+  </div>
+
+  <div [hidden]="!feedbackCopy || elapsed" [@expand]>
+    <h3>Your Submission</h3>
+    <p>First Name: {{feedbackCopy.firstname}}</p>
+    <p>Last Name: {{feedbackCopy.lastname}}</p>
+    <p>Tel. Number{{feedbackCopy.telnum}}</p>
+    <p>Email: {{feedbackCopy.email}}</p>
+    <p>Contact You? {{feedbackCopy.agree}}</p>
+    <p>How? {{feedbackCopy.contacttype}}</p>
+    <p>Feedback: {{feedbackCopy.message}}</p>
   </div>
 </div>
